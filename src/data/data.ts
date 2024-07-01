@@ -1,0 +1,1 @@
+export const dataAvarage = 0;
