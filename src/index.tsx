@@ -26,7 +26,8 @@ a:active {
 }
 html,
 body {
-  height: 100%;
+  height: 89vh;
+  background: linear-gradient(#e66465, #9198e5);
 }
 body {
   line-height: 1;

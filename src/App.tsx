@@ -1,5 +1,5 @@
 import React from "react";
-import { TestEducationPage } from "./components/TestEducationPage/TestEducationPage";
+import { TestEducationPage } from "./pages/TestEducationPage";
 
 function App() {
   return <TestEducationPage />;
