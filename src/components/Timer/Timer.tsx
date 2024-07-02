@@ -5,7 +5,7 @@ type TimerProps = {
   onTimeUp: () => void;
 };
 
-export const Timer = (props: TimerProps) => {
+export const Timer = React.memo((props: TimerProps) => {
   const [timeLeft, setTimeLeft] = React.useState<number>(() => {
     const savedTime = localStorage.getItem("timeLeft");
     return savedTime ? parseInt(savedTime) : props.duration;
@@ -38,4 +38,4 @@ export const Timer = (props: TimerProps) => {
   };
 
   return <div>Time left: {formatTime(timeLeft)}</div>;
-};
+});

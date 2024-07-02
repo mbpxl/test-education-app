@@ -2,8 +2,9 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { DataArrayType, data } from "../../data/data";
 import { Button } from "../Styled/StyledButton";
 import "./AddQuestion.css";
+import React from "react";
 
-export const AddQuestion = (props: any) => {
+export const AddQuestion = React.memo((props: any) => {
   const submit = (
     values: DataArrayType,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
@@ -100,4 +101,4 @@ export const AddQuestion = (props: any) => {
       </Formik>
     </div>
   );
-};
+});
