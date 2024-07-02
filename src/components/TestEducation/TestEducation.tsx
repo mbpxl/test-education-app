@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { DataArrayType, data } from "../../data/data";
 import { AddQuestion } from "../AddQuestion/AddQuestion";
 import { Result } from "../Result/Result";
+import { Timer } from "../Timer/Timer";
 
 const StyledTestEducation = styled.div`
   width: 640px;
@@ -80,7 +81,7 @@ export const TestEducation = () => {
     localStorage.setItem("score", score.toString());
   }, [score]);
 
-  const handleAnswerClick = (answerIndex: number) => {
+  const handleAnswerClick = (answerIndex: number): void => {
     if (!lock) {
       setSelectedAnswer(answerIndex);
       setIsCorrect(answerIndex === question.ans);
@@ -91,11 +92,11 @@ export const TestEducation = () => {
     }
   };
 
-  const handleChangeEditMode = () => {
+  const handleChangeEditMode = (): void => {
     setEditQuestion(!isEditQuestion);
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = (): void => {
     if (index < data.length - 1) {
       setIndex((prevIndex) => prevIndex + 1);
       setQuestion(data[index + 1]);
@@ -108,7 +109,7 @@ export const TestEducation = () => {
     }
   };
 
-  const reset = () => {
+  const reset = (): void => {
     setIndex(0);
     setQuestion(data[0]);
     setScore(0);
@@ -116,6 +117,10 @@ export const TestEducation = () => {
     setResult(false);
     setSelectedAnswer(null);
     localStorage.clear();
+  };
+
+  const handleTimeUp = (): void => {
+    setResult(true);
   };
 
   return (
@@ -142,6 +147,7 @@ export const TestEducation = () => {
                 Edit
               </Button>
             </Title>
+            <Timer duration={300} onTimeUp={handleTimeUp} />
             <Title size={"27px"} weight={"500"}>
               {index + 1}. {question.question}
             </Title>
