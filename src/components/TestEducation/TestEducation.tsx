@@ -25,6 +25,37 @@ export const TestEducation = () => {
   //useState для прохода по объекту (элемента массива data) массива
   const [question, setQuestion] = React.useState<DataArrayType>(data[index]);
 
+  //useState для отслеживание выбранного ответа
+  const [selectedAnswer, setSelectedAnswer] = React.useState<number | null>(
+    null
+  );
+
+  //useState для проверки правильности ответа. От значение зависит каким будет цвет выбранного овтета. Смотри в props для <QuestionList />
+  const [isCorrect, setIsCorrect] = React.useState<boolean | null>(null);
+
+  //useState для блокирвоки выбора ответа, после первого ответа
+  const [lock, setLock] = React.useState<boolean>(false);
+
+  const handleAnswerClick = (answerIndex: number) => {
+    if (!lock) {
+      setSelectedAnswer(answerIndex);
+      setIsCorrect(answerIndex === question.ans);
+      setLock(true);
+    }
+  };
+
+  const nextQuestion = () => {
+    if (index < data.length - 1) {
+      setIndex((prevIndex) => prevIndex + 1);
+      setQuestion(data[index + 1]);
+      setSelectedAnswer(null);
+      setIsCorrect(null);
+      setLock(false);
+    } else {
+      console.log("Тест завершен");
+    }
+  };
+
   return (
     <StyledTestEducation>
       <Title size={"18px"} weight={"400"} header>
@@ -33,9 +64,16 @@ export const TestEducation = () => {
       <Title size={"27px"} weight={"500"}>
         {index + 1}. {question.question}
       </Title>
-      <QuestionList index={index} />
-      <Button>next</Button>
-      <ProgressBar>1 of 5</ProgressBar>
+      <QuestionList
+        index={index}
+        handleAnswerClick={handleAnswerClick}
+        selectedAnswer={selectedAnswer}
+        isCorrect={isCorrect}
+      />
+      <Button onClick={nextQuestion}>next</Button>
+      <ProgressBar>
+        {index + 1} of {data.length}
+      </ProgressBar>
     </StyledTestEducation>
   );
 };
