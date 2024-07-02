@@ -3,7 +3,7 @@ import { Title } from "../Styled/StyledText";
 import { QuestionList } from "../QuestionsList/QuestionsList";
 import { Button } from "../Styled/StyledButton";
 import { ProgressBar } from "../Styled/StyledProgressBar";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { DataArrayType, data } from "../../data/data";
 import { AddQuestion } from "../AddQuestion/AddQuestion";
 import { Result } from "../Result/Result";
@@ -22,7 +22,7 @@ const StyledTestEducation = styled.div`
   padding: 40px 50px;
 `;
 
-export const TestEducation = () => {
+export const TestEducation = React.memo(() => {
   //useState для смены режимов теста и добавления нового вопроса
   const [isEditQuestion, setEditQuestion] = React.useState<boolean>(true);
 
@@ -81,22 +81,25 @@ export const TestEducation = () => {
     localStorage.setItem("score", score.toString());
   }, [score]);
 
-  const handleAnswerClick = (answerIndex: number): void => {
-    if (!lock) {
-      setSelectedAnswer(answerIndex);
-      setIsCorrect(answerIndex === question.ans);
-      setLock(true);
-      if (answerIndex === question.ans) {
-        setScore((prev) => prev + 1);
+  const handleAnswerClick = useCallback(
+    (answerIndex: number): void => {
+      if (!lock) {
+        setSelectedAnswer(answerIndex);
+        setIsCorrect(answerIndex === question.ans);
+        setLock(true);
+        if (answerIndex === question.ans) {
+          setScore((prev) => prev + 1);
+        }
       }
-    }
-  };
+    },
+    [lock, question.ans]
+  );
 
-  const handleChangeEditMode = (): void => {
+  const handleChangeEditMode = useCallback((): void => {
     setEditQuestion(!isEditQuestion);
-  };
+  }, [isEditQuestion]);
 
-  const nextQuestion = (): void => {
+  const nextQuestion = useCallback((): void => {
     if (index < data.length - 1) {
       setIndex((prevIndex) => prevIndex + 1);
       setQuestion(data[index + 1]);
@@ -107,9 +110,9 @@ export const TestEducation = () => {
       console.log("Тест завершен");
       setResult(true);
     }
-  };
+  }, [index]);
 
-  const reset = (): void => {
+  const reset = useCallback((): void => {
     setIndex(0);
     setQuestion(data[0]);
     setScore(0);
@@ -117,11 +120,11 @@ export const TestEducation = () => {
     setResult(false);
     setSelectedAnswer(null);
     localStorage.clear();
-  };
+  }, []);
 
-  const handleTimeUp = (): void => {
+  const handleTimeUp = useCallback((): void => {
     setResult(true);
-  };
+  }, []);
 
   return (
     <div className="">
@@ -173,4 +176,4 @@ export const TestEducation = () => {
       )}
     </div>
   );
-};
+});
