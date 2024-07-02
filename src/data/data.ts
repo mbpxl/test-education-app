@@ -4,7 +4,7 @@ export type DataArrayType = {
   option2: string;
   option3: string;
   option4: string;
-  ans: number;
+  ans: number | string;
 }
 
 export const data: Array<DataArrayType> = [
